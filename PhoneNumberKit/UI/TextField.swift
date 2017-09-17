@@ -181,7 +181,7 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
         let textAsNSString = formattedText as NSString
         var countFromEnd = 0
         guard let cursorPosition = extractCursorPosition() else {
-            return nil
+            return NSMakeRange(formattedText.count, 1)
         }
         
         for i in stride(from: (textAsNSString.length - 1), through: 0, by: -1) {
@@ -234,9 +234,10 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
             textField.text = formattedNationalNumber
         }
         sendActions(for: .editingChanged)
+        
         if let selectedTextRange = selectedTextRange, let selectionRangePosition = textField.position(from: beginningOfDocument, offset: selectedTextRange.location) {
             let selectionRange = textField.textRange(from: selectionRangePosition, to: selectionRangePosition)
-            textField.selectedTextRange = selectionRange
+            DispatchQueue.main.async { textField.selectedTextRange = selectionRange }
         }
         
         return false
