@@ -54,6 +54,11 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
         }
     }
     public var isPartialFormatterEnabled = true
+    public var shouldAddPrefixBeforeNationalNumber = true {
+        didSet {
+            partialFormatter.shouldAddPrefixBeforeNationalNumber = shouldAddPrefixBeforeNationalNumber
+        }
+    }
     
     public var maxDigits: Int? {
         didSet {
