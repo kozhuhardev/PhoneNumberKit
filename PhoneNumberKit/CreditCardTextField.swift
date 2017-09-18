@@ -15,8 +15,9 @@ public final class CreditCardTextField: PhoneNumberTextField {
     public enum ContentType {
         case number
         case validDate
+        case cvc
     }
-    
+
     // MARK: - Methods
     
     public func setContentType(to type: ContentType) {
@@ -44,6 +45,9 @@ private extension CreditCardTextField.ContentType {
             
         case .validDate:
             return "CARDDATE"
+            
+        case .cvc:
+            return "CARDCVC"
         }
     }
     
@@ -54,6 +58,9 @@ private extension CreditCardTextField.ContentType {
             
         case .validDate:
             return 4
+            
+        case .cvc:
+            return 3
         }
     }
 }
