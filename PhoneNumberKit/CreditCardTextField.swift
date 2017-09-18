@@ -17,12 +17,11 @@ public final class CreditCardTextField: PhoneNumberTextField {
         case validDate
     }
     
-    // MARK: - Properties
+    // MARK: - Methods
     
-    public var contentType = ContentType.number {
-        didSet {
-            didUpdateContentType()
-        }
+    public func setContentType(to type: ContentType) {
+        defaultRegion = type.id
+        maxDigits = type.maximumDigits
     }
     
     // MARK: - Overrides
@@ -31,14 +30,7 @@ public final class CreditCardTextField: PhoneNumberTextField {
         super.setup()
         
         withPrefix = false
-        didUpdateContentType()
-    }
-    
-    // MARK: - Private
-    
-    private func didUpdateContentType() {
-        defaultRegion = contentType.id
-        maxDigits = contentType.maximumDigits
+        setContentType(to: .number)
     }
 }
 
