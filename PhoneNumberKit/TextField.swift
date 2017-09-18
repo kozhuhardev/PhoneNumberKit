@@ -60,11 +60,7 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
         }
     }
     
-    public var maxDigits: Int? {
-        didSet {
-            partialFormatter.maxDigits = maxDigits
-        }
-    }
+    public var maxDigits: Int?
     
     let partialFormatter: PartialFormatter
     
@@ -214,13 +210,10 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
         let textAsNSString = text as NSString
         let changedRange = textAsNSString.substring(with: range) as NSString
         let modifiedTextField = textAsNSString.replacingCharacters(in: range, with: string)
-        
-        let filteredCharacters = modifiedTextField.characters.filter {
-            return  String($0).rangeOfCharacter(from: (textField as! PhoneNumberTextField).nonNumericSet as CharacterSet) == nil
-        }
-        let rawNumberString = String(filteredCharacters)
+        let (rawNumberString, digitsOnlyString) = filterCharacters(for: modifiedTextField)
 
         let formattedNationalNumber = partialFormatter.formatPartial(rawNumberString as String)
+        let rawNumberPrefix = partialFormatter.prefixBeforeNationalNumber
         var selectedTextRange: NSRange?
         
         let nonNumericRange = (changedRange.rangeOfCharacter(from: nonNumericSet as CharacterSet).location != NSNotFound)
@@ -233,6 +226,11 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
             selectedTextRange = selectionRangeForNumberReplacement(textField: textField, formattedText: formattedNationalNumber)
             textField.text = formattedNationalNumber
         }
+        
+        if let trimmedNumber = trimmedString(forClearedInput: digitsOnlyString, from: textField, withPrefix: rawNumberPrefix) {
+            textField.text = trimmedNumber
+        }
+
         sendActions(for: .editingChanged)
         
         if let selectedTextRange = selectedTextRange, let selectionRangePosition = textField.position(from: beginningOfDocument, offset: selectedTextRange.location) {
@@ -267,5 +265,47 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
     
     open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return _delegate?.textFieldShouldReturn?(textField) ?? true
+    }
+}
+
+// MARK: - Private extensions
+
+private extension PhoneNumberTextField {
+    func filterCharacters(for input: String) -> (normalized: String, digits: String) {
+        let nonNumericSet = self.nonNumericSet as CharacterSet
+        var filteredCharacters = [String.Element]()
+        var digitsOnly = [String.Element]()
+        filteredCharacters.reserveCapacity(input.unicodeScalars.count)
+        digitsOnly.reserveCapacity(input.unicodeScalars.count)
+        
+        input.characters.forEach { char in
+            let stringifiedCharacter = String(char)
+            if stringifiedCharacter.rangeOfCharacter(from: nonNumericSet) == nil {
+                filteredCharacters.append(char)
+                if PhoneNumberConstants.plusChars.range(of: stringifiedCharacter) == nil {
+                    digitsOnly.append(char)
+                }
+            }
+        }
+        
+        return (String(filteredCharacters), String(digitsOnly))
+    }
+    
+    func trimmedString(forClearedInput clearedInput: String, from textField: UITextField,
+                       withPrefix prefix: String) -> String? {
+        if let maxDigits = maxDigits {
+            let rawTextLenght = clearedInput.utf8.count - prefix.utf8.count
+            let formattedTextLenght = textField.text?.count ?? 0
+            let decorationLenght = abs(formattedTextLenght - rawTextLenght)
+            
+            let treshold = maxDigits + decorationLenght
+            
+            if let text = textField.text, text.count > treshold {
+                let expectedEndIndex = text.index(text.endIndex, offsetBy: -(text.count - treshold))
+                return String(text[text.startIndex ..< expectedEndIndex])
+            }
+        }
+        
+        return nil
     }
 }
