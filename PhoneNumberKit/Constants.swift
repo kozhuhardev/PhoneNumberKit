@@ -96,7 +96,7 @@ public enum PhoneNumberType {
 struct PhoneNumberConstants {
   static let defaultCountry = "US"
   static let defaultExtnPrefix = " ext. "
-  static let longPhoneNumber = "999999999999999"
+  static let longPhoneNumber = "99999999999999999999"
   static let minLengthForNSN = 2
   static let maxInputStringLength = 250
   static let maxLengthCountryCode = 3
