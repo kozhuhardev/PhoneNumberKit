@@ -64,6 +64,9 @@ public final class PartialFormatter {
         }
     }
     
+    public var currentNationalPrefix: String {
+        return currentMetadata?.nationalPrefix ?? ""
+    }
     
     //MARK: Lifecycle
     
@@ -88,7 +91,10 @@ public final class PartialFormatter {
         if prefixBeforeNationalNumber.characters.count > 0 {
             nationalNumber = extractCountryCallingCode(nationalNumber)
         }
-        nationalNumber = extractNationalPrefix(nationalNumber)
+        
+        if shouldAddPrefixBeforeNationalNumber {
+            nationalNumber = extractNationalPrefix(nationalNumber)
+        }
         
         if let maxDigits = maxDigits {
             let extra = nationalNumber.characters.count - maxDigits

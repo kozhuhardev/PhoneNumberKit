@@ -210,7 +210,7 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
         let textAsNSString = text as NSString
         let changedRange = textAsNSString.substring(with: range) as NSString
         let modifiedTextField = textAsNSString.replacingCharacters(in: range, with: string)
-        let (rawNumberString, digitsOnlyString) = filterCharacters(for: modifiedTextField)
+        let (rawNumberString, digitsOnlyString) = filterCharacters(for: modifiedTextField, withReplacedRange: range)
 
         let formattedNationalNumber = partialFormatter.formatPartial(rawNumberString as String)
         let rawNumberPrefix = partialFormatter.prefixBeforeNationalNumber
@@ -271,7 +271,7 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
 // MARK: - Private extensions
 
 private extension PhoneNumberTextField {
-    func filterCharacters(for input: String) -> (normalized: String, digits: String) {
+    func filterCharacters(for input: String, withReplacedRange replacementRange: NSRange) -> (normalized: String, digits: String) {
         let nonNumericSet = self.nonNumericSet as CharacterSet
         var filteredCharacters = [String.Element]()
         var digitsOnly = [String.Element]()
@@ -288,7 +288,27 @@ private extension PhoneNumberTextField {
             }
         }
         
-        return (String(filteredCharacters), String(digitsOnly))
+        let rawNumberString = trimNationalPrefix(in: String(filteredCharacters), withReplacedRange: replacementRange)
+        let digitsOnlyString = trimNationalPrefix(in: String(digitsOnly), withReplacedRange: replacementRange)
+        
+        return (rawNumberString, digitsOnlyString)
+    }
+    
+    func trimNationalPrefix(in string: String, withReplacedRange replacementRange: NSRange) -> String {
+        guard let maxDigits = maxDigits, !shouldAddPrefixBeforeNationalNumber else {
+            return string
+        }
+        
+        let prefixLength = partialFormatter.currentNationalPrefix.utf8.count
+        let isPrefixValid = string.utf8.count == maxDigits + prefixLength && string.starts(with: partialFormatter.currentNationalPrefix)
+        let isReplacementRangeValid = replacementRange.location == 0 && replacementRange.length >= min(maxDigits, text?.utf8.count ?? 0)
+        
+        guard isPrefixValid && isReplacementRangeValid else {
+            return string
+        }
+        
+        let stringStartIndex = string.index(string.startIndex, offsetBy: prefixLength)
+        return String(string[stringStartIndex ..< string.endIndex])
     }
     
     func trimmedString(forClearedInput clearedInput: String, from textField: UITextField,
