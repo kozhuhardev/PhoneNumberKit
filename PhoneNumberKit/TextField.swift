@@ -229,6 +229,9 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
         
         if let trimmedNumber = trimmedString(forClearedInput: digitsOnlyString, from: textField, withPrefix: rawNumberPrefix) {
             textField.text = trimmedNumber
+            if selectedTextRange != nil && selectedTextRange!.location > (textField.text?.count ?? 0) {
+                selectedTextRange!.location = textField.text?.count ?? 0
+            }
         }
 
         sendActions(for: .editingChanged)
