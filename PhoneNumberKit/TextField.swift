@@ -30,7 +30,7 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
         }
     }
     
-    oven var normalizedText: String? {
+    open var normalizedText: String? {
         guard let text = text else {
             return nil
         }
