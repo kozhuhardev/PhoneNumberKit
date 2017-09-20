@@ -130,6 +130,7 @@ struct MetadataPhoneNumberDesc {
     let exampleNumber: String?
     let nationalNumberPattern: String?
     let possibleNumberPattern: String?
+    let maximumDigitsCount: Int?
 }
 
 extension MetadataPhoneNumberDesc {
@@ -142,6 +143,8 @@ extension MetadataPhoneNumberDesc {
         self.possibleNumberPattern = jsondDict?.value(forKey: "possibleNumberPattern") as? String
         self.exampleNumber = jsondDict?.value(forKey: "exampleNumber") as? String
         
+        let maximumDigitsCount = jsondDict?.value(forKey: "maximumDigitsCount") as? String
+        self.maximumDigitsCount = maximumDigitsCount.flatMap { Int($0) }
     }
 }
 

@@ -70,6 +70,7 @@
 		C6DF6CE11D1B18DD00259F4B /* PhoneNumberMetadata.json in Resources */ = {isa = PBXBuildFile; fileRef = 3435CC951BBFF66F003F953B /* PhoneNumberMetadata.json */; };
 		EB40BC621F6FC98000081E5A /* CreditCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB40BC611F6FC98000081E5A /* CreditCardTextField.swift */; };
 		EB40BC641F6FC9D300081E5A /* CreditCardTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB40BC611F6FC98000081E5A /* CreditCardTextField.swift */; };
+		EB40CB8C1F72C2AB001531E4 /* PrefixlessPhoneTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB40CB8B1F72C2AB001531E4 /* PrefixlessPhoneTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +111,7 @@
 		C6DF6CA71D1B145300259F4B /* PhoneNumberKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumberKit.h; sourceTree = "<group>"; };
 		C6DF6CCC1D1B18B000259F4B /* PhoneNumberKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PhoneNumberKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB40BC611F6FC98000081E5A /* CreditCardTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardTextField.swift; sourceTree = "<group>"; };
+		EB40CB8B1F72C2AB001531E4 /* PrefixlessPhoneTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefixlessPhoneTextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,6 +241,7 @@
 			children = (
 				343B850B1C62A25600918E46 /* TextField.swift */,
 				EB40BC611F6FC98000081E5A /* CreditCardTextField.swift */,
+				EB40CB8B1F72C2AB001531E4 /* PrefixlessPhoneTextField.swift */,
 			);
 			name = TextFields;
 			sourceTree = "<group>";
@@ -476,6 +479,7 @@
 				3420CF5E1BE8959F00FAE34F /* Formatter.swift in Sources */,
 				343B850D1C62A25600918E46 /* TextField.swift in Sources */,
 				346922691BC023A60023482F /* PhoneNumberKit.swift in Sources */,
+				EB40CB8C1F72C2AB001531E4 /* PrefixlessPhoneTextField.swift in Sources */,
 				343B850C1C62A25600918E46 /* PartialFormatter.swift in Sources */,
 				3422D9BA1BE6A2D500867D02 /* ParseManager.swift in Sources */,
 				34566C9A1BC112C500715E6B /* RegexManager.swift in Sources */,
