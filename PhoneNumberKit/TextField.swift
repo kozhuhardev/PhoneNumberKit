@@ -30,6 +30,14 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
         }
     }
     
+    var normalizedText: String? {
+        guard let text = text else {
+            return nil
+        }
+        
+        return filterCharacters(for: text, withReplacedRange: NSRange(location: 0, length: text.count)).normalized
+    }
+    
     /// allows text to be set without formatting
     open func setTextUnformatted(newValue:String?) {
         super.text = newValue
