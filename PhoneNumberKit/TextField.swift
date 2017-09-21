@@ -69,6 +69,7 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
     }
     
     public var maxDigits: Int?
+    public var maxDigitsWasReached = false
     public var onMaxDigitsReached: (() -> Void)?
     
     let partialFormatter: PartialFormatter
@@ -252,7 +253,10 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
         }
         
         if let maxDigits = maxDigits, digitsOnlyString.utf8.count >= maxDigits {
+            maxDigitsWasReached = true
             onMaxDigitsReached?()
+        } else {
+            maxDigitsWasReached = false
         }
         
         return false
