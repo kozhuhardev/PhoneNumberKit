@@ -70,7 +70,9 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
     
     public var maxDigits: Int?
     public var maxDigitsWasReached = false
+    
     public var onMaxDigitsReached: (() -> Void)?
+    public var onDidEndEditing: (() -> Void)?
     
     let partialFormatter: PartialFormatter
     
@@ -276,6 +278,7 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
     
     open func textFieldDidEndEditing(_ textField: UITextField) {
         _delegate?.textFieldDidEndEditing?(textField)
+        onDidEndEditing?()
     }
     
     open func textFieldShouldClear(_ textField: UITextField) -> Bool {
