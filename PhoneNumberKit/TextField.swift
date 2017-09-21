@@ -69,6 +69,7 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
     }
     
     public var maxDigits: Int?
+    public var onMaxDigitsReached: (() -> Void)?
     
     let partialFormatter: PartialFormatter
     
@@ -235,7 +236,8 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
             textField.text = formattedNationalNumber
         }
         
-        if let trimmedNumber = trimmedString(forClearedInput: digitsOnlyString, from: textField, withPrefix: rawNumberPrefix) {
+        let trimmedNumber = trimmedString(forClearedInput: digitsOnlyString, from: textField, withPrefix: rawNumberPrefix)
+        if let trimmedNumber = trimmedNumber {
             textField.text = trimmedNumber
             if selectedTextRange != nil && selectedTextRange!.location > (textField.text?.count ?? 0) {
                 selectedTextRange!.location = textField.text?.count ?? 0
@@ -247,6 +249,10 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
         if let selectedTextRange = selectedTextRange, let selectionRangePosition = textField.position(from: beginningOfDocument, offset: selectedTextRange.location) {
             let selectionRange = textField.textRange(from: selectionRangePosition, to: selectionRangePosition)
             DispatchQueue.main.async { textField.selectedTextRange = selectionRange }
+        }
+        
+        if let maxDigits = maxDigits, digitsOnlyString.utf8.count >= maxDigits {
+            onMaxDigitsReached?()
         }
         
         return false
