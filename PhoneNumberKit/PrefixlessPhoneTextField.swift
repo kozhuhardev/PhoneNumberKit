@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class PrefixlessPhoneTextField: PhoneNumberTextField {
+open class PrefixlessPhoneTextField: PhoneNumberTextField {
     
     // MARK: - Properties
     
