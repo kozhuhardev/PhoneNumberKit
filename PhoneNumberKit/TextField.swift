@@ -245,6 +245,7 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
             }
         }
 
+        maxDigitsWasReached = maxDigits != nil && digitsOnlyString.utf8.count >= maxDigits!
         sendActions(for: .editingChanged)
         
         if let selectedTextRange = selectedTextRange, let selectionRangePosition = textField.position(from: beginningOfDocument, offset: selectedTextRange.location) {
@@ -252,11 +253,8 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
             DispatchQueue.main.async { textField.selectedTextRange = selectionRange }
         }
         
-        if let maxDigits = maxDigits, digitsOnlyString.utf8.count >= maxDigits {
-            maxDigitsWasReached = true
+        if maxDigitsWasReached {
             onMaxDigitsReached?()
-        } else {
-            maxDigitsWasReached = false
         }
         
         return false
