@@ -68,6 +68,14 @@ public final class PartialFormatter {
         return currentMetadata?.nationalPrefix ?? ""
     }
     
+    public var currentCountryCode: String? {
+        guard let code = currentMetadata?.countryCode else {
+            return nil
+        }
+        
+        return "\(code)"
+    }
+    
     //MARK: Lifecycle
     
     /**

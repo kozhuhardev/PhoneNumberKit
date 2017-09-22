@@ -248,7 +248,10 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
         }
 
         let oldMaxDigitsWasReached = maxDigitsWasReached
-        maxDigitsWasReached = maxDigits != nil && digitsOnlyString.utf8.count >= maxDigits!
+        let finalText = textField.text ?? ""
+        var phoneDigitsString = filterCharacters(for: finalText, withReplacedRange: NSRange(location: 0, length: finalText.utf8.count)).digits
+        
+        maxDigitsWasReached = maxDigits != nil && phoneDigitsString.utf8.count >= maxDigits!
         sendActions(for: .editingChanged)
         
         if let selectedTextRange = selectedTextRange, let selectionRangePosition = textField.position(from: beginningOfDocument, offset: selectedTextRange.location) {
