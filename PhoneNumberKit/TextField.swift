@@ -71,7 +71,7 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
     public var maxDigits: Int?
     public var maxDigitsWasReached = false
     
-    public var onMaxDigitsReached: (() -> Void)?
+    public var onIsMaxDigitsReachedChanged: ((Bool) -> Void)?
     public var onDidEndEditing: (() -> Void)?
     
     let partialFormatter: PartialFormatter
@@ -247,6 +247,7 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
             }
         }
 
+        let oldMaxDigitsWasReached = maxDigitsWasReached
         maxDigitsWasReached = maxDigits != nil && digitsOnlyString.utf8.count >= maxDigits!
         sendActions(for: .editingChanged)
         
@@ -255,8 +256,8 @@ open class PhoneNumberTextField: UITextField, UITextFieldDelegate {
             DispatchQueue.main.async { textField.selectedTextRange = selectionRange }
         }
         
-        if maxDigitsWasReached {
-            onMaxDigitsReached?()
+        if maxDigitsWasReached != oldMaxDigitsWasReached {
+            onIsMaxDigitsReachedChanged?(maxDigitsWasReached)
         }
         
         return false
