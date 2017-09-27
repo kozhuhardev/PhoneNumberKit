@@ -8,7 +8,7 @@
 
 import UIKit
 
-public final class CreditCardTextField: PhoneNumberTextField {
+open final class CreditCardTextField: PhoneNumberTextField {
     
     // MARK: - Types
     
