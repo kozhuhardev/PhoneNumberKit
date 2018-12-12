@@ -304,7 +304,7 @@ private extension PhoneNumberTextField {
         filteredCharacters.reserveCapacity(input.unicodeScalars.count)
         digitsOnly.reserveCapacity(input.unicodeScalars.count)
         
-        input.characters.forEach { char in
+        input.forEach { char in
             let stringifiedCharacter = String(char)
             if stringifiedCharacter.rangeOfCharacter(from: nonNumericSet) == nil {
                 filteredCharacters.append(char)
